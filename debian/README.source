@@ -1,0 +1,74 @@
+The Android source repositories are quite chaotic.  They often include a mix
+of things under arbitrary umbrellas.  For example, there are parts of this
+particular repository that will only ever be built when building the complete
+Android OS (aka "target"), other parts that are only built as part of the SDK
+to support building Android apps (aka "host"), and other parts that are used
+both in the SDK and the Android OS. Most of the source code in this particular
+repostory will never be built or included on Debian because it is only used in
+the Android OS.
+
+It is possible to see which sections will be built for what by looking at the
+Android.mk files.  The parts that are meant for the "host" system, in this
+case Debian, will have lines like this in it:
+
+    include $(BUILD_HOST_EXECUTABLE)
+    include $(BUILD_HOST_JAVA_LIBRARY)
+    include $(BUILD_HOST_SHARED_LIBRARY)
+    include $(BUILD_HOST_STATIC_LIBRARY)
+
+The build targets that are only for Android OS builds instead have this:
+
+    include $(BUILD_EXECUTABLE)
+    include $(BUILD_JAVA_LIBRARY)
+    include $(BUILD_SHARED_LIBRARY)
+    include $(BUILD_STATIC_LIBRARY)
+
+A given chunk of code that is built both for "host" will have both of these
+lines included in the Android.mk file.
+
+
+Structure of the package's git repository
+-----------------------------------------
+
+The source code has been excerpted form the git repository
+ https://android.googlesource.com/platform/build
+
+The Android project does not release tarballs of their core software. This
+package source repo is configured following git-buildpackage's manual, under
+"When upstream uses GIT/No upstream tarballs":
+
+* http://honk.sigxcpu.org/projects/git-buildpackage/manual-html/gbp.import.html#GBP.IMPORT.UPSTREAM-GIT
+* file:///usr/share/doc/git-buildpackage/manual-html/gbp.import.html#GBP.IMPORT.UPSTREAM-GIT
+
+If you want to update the source git repo for this package to a newer release,
+then fetch the new commits from the upstream git repo:
+
+ git remote add upstream https://android.googlesource.com/platform/build
+ git fetch upstream
+
+debian/gbp.conf is set up to use upstream's release branches and build
+tarballs from there.  There are some files that need to be removed from the
+source tarball, they are removed in commits to the 'upstream' branch, since
+the source tarball is generated directly from that. The upstream tags and
+branches are a confusing mess of things, so this package uses debian-style
+upstream/NO tags as the canonical source marker.  These tags must be generated
+by a human, since Android does not provide a rational tagging scheme based on
+their public version numbers of the Android SDK and related packages.
+
+
+Omitted files
+-------------
+
+tools/droiddoc/templates-pdk/assets/jquery-resizable.min.js
+tools/droiddoc/templates-pdk/assets/prettify.js
+tools/droiddoc/templates-sdk/assets/js/global-libraries-combined.js
+tools/droiddoc/templates-sdk/assets/js/prettify.js
+tools/droiddoc/templates-sdk/assets/scroller/jquery.jscrollpane.min.js
+tools/droiddoc/templates-sdk/assets/scroller/jquery.mousewheel.min.js
+
+These are minimized .js files, so they are not the same as the original source
+code.  They were removed in a commit in the 'upstream' branch so that they do
+not get included in the source tarball that is generated from this repo.
+
+
+ -- Hans-Christoph Steiner <hans@eds.org>, Thu, 18 Sep 2014 20:01:52 -0400
