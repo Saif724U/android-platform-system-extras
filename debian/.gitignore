@@ -1,0 +1,9 @@
+*~
+*.debhelper
+*.substvars
+*.log
+files
+tmp/
+android-ext4-utils/
+android-libext4-utils-host-dev/
+android-libext4-utils-host/

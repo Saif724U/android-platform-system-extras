@@ -1,0 +1,39 @@
+Source: android-platform-system-extras
+Section: devel
+Priority: extra
+Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.org>
+Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Build-Depends: debhelper (>=9),
+               android-system-dev,
+               android-libsparse-host-dev,
+               libselinux-dev,
+               zlib1g-dev
+Standards-Version: 3.9.5
+Homepage: https://android.googlesource.com/platform/system/extras
+Vcs-Git: https://alioth.debian.org/anonscm/git/android-tools/android-platform-system-extras.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=android-tools/android-platform-system-extras.git
+
+Package: android-ext4-utils
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: 
+
+Package: android-libext4-utils-host
+Section: libs
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Android utility library for cross-platform tools
+ Library providing utility functions to Android related tools. This is needed
+ purely to get various Android utilities working.
+
+Package: android-libext4-utils-host-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends},
+         libc-dev,
+         android-libext4-utils-host (= ${binary:Version})
+Description: Android utility library for cross-platform tools - headers
+ Library providing utility functions to Android related tools. This is needed
+ purely to get various Android utilities working.
+ .
+ This package contains the development files.
