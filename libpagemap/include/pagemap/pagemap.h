@@ -19,7 +19,10 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <sys/cdefs.h>
 #include <sys/types.h>
+
+__BEGIN_DECLS
 
 typedef struct pm_memusage pm_memusage_t;
 
@@ -29,6 +32,7 @@ struct pm_memusage {
     size_t rss;
     size_t pss;
     size_t uss;
+    size_t swap;
 };
 
 /* Clears a memusage. */
@@ -67,9 +71,9 @@ struct pm_process {
 struct pm_map {
     pm_process_t *proc;
 
-    unsigned long start;
-    unsigned long end;
-    unsigned long offset;
+    uint64_t start;
+    uint64_t end;
+    uint64_t offset;
     int flags;
 
     char *name;
@@ -87,11 +91,11 @@ int pm_kernel_pids(pm_kernel_t *ker, pid_t **pids_out, size_t *len);
 
 /* Get the map count (from /proc/kpagecount) of a physical frame.
  * The count is returned through *count_out. */
-int pm_kernel_count(pm_kernel_t *ker, unsigned long pfn, uint64_t *count_out);
+int pm_kernel_count(pm_kernel_t *ker, uint64_t pfn, uint64_t *count_out);
 
 /* Get the page flags (from /proc/kpageflags) of a physical frame.
  * The count is returned through *flags_out. */
-int pm_kernel_flags(pm_kernel_t *ker, unsigned long pfn, uint64_t *flags_out);
+int pm_kernel_flags(pm_kernel_t *ker, uint64_t pfn, uint64_t *flags_out);
 
 #define PM_PAGE_LOCKED     (1 <<  0)
 #define PM_PAGE_ERROR      (1 <<  1)
@@ -104,6 +108,24 @@ int pm_kernel_flags(pm_kernel_t *ker, unsigned long pfn, uint64_t *flags_out);
 #define PM_PAGE_WRITEBACK  (1 <<  8)
 #define PM_PAGE_RECLAIM    (1 <<  9)
 #define PM_PAGE_BUDDY      (1 << 10)
+
+/* for kernels >= 2.6.31 */
+#define PM_PAGE_MMAP          (1 << 11)
+#define PM_PAGE_ANON          (1 << 12)
+#define PM_PAGE_SWAPCACHE     (1 << 13)
+#define PM_PAGE_SWAPBACKED    (1 << 14)
+#define PM_PAGE_COMPOUND_HEAD (1 << 15)
+#define PM_PAGE_COMPOUND_TAIL (1 << 16)
+#define PM_PAGE_HUGE          (1 << 17)
+#define PM_PAGE_UNEVICTABLE   (1 << 18)
+#define PM_PAGE_HWPOISON      (1 << 19)
+#define PM_PAGE_NOPAGE        (1 << 20)
+
+/* for kernels >= 2.6.32 */
+#define PM_PAGE_KSM           (1 << 21)
+
+/* for kernels >= 3.4 */
+#define PM_PAGE_THP           (1 << 22)
 
 /* Destroy a pm_kernel_t. */
 int pm_kernel_destroy(pm_kernel_t *ker);
@@ -118,6 +140,11 @@ int pm_process_create(pm_kernel_t *ker, pid_t pid, pm_process_t **proc_out);
 /* Get the total memory usage of a process and store in *usage_out. */
 int pm_process_usage(pm_process_t *proc, pm_memusage_t *usage_out);
 
+/* Get the total memory usage of a process and store in *usage_out, only
+ * counting pages with specified flags. */
+int pm_process_usage_flags(pm_process_t *proc, pm_memusage_t *usage_out,
+                        uint64_t flags_mask, uint64_t required_flags);
+
 /* Get the working set of a process (if ws_out != NULL), and reset it
  * (if reset != 0). */
 int pm_process_workingset(pm_process_t *proc, pm_memusage_t *ws_out, int reset);
@@ -126,7 +153,7 @@ int pm_process_workingset(pm_process_t *proc, pm_memusage_t *ws_out, int reset);
  * The array of PFNs is returned through *range_out, and the caller has the 
  * responsibility to free it. */
 int pm_process_pagemap_range(pm_process_t *proc,
-                             unsigned long low, unsigned long hi,
+                             uint64_t low, uint64_t hi,
                              uint64_t **range_out, size_t *len);
 
 #define _BITS(x, offset, bits) (((x) >> offset) & ((1LL << (bits)) - 1))
@@ -153,6 +180,7 @@ int pm_process_destroy(pm_process_t *proc);
 #define PM_MAP_READ  1
 #define PM_MAP_WRITE 2
 #define PM_MAP_EXEC  4
+#define PM_MAP_PERMISSIONS (PM_MAP_READ | PM_MAP_WRITE | PM_MAP_EXEC)
 #define pm_map_start(map)  ((map)->start)
 #define pm_map_end(map)    ((map)->end)
 #define pm_map_offset(map) ((map)->offset)
@@ -165,7 +193,14 @@ int pm_map_pagemap(pm_map_t *map, uint64_t **pagemap_out, size_t *len);
 /* Get the memory usage of this map alone. */
 int pm_map_usage(pm_map_t *map, pm_memusage_t *usage_out);
 
+/* Get the memory usage of this map alone, only counting pages with specified
+ * flags. */
+int pm_map_usage_flags(pm_map_t *map, pm_memusage_t *usage_out,
+                        uint64_t flags_mask, uint64_t required_flags);
+
 /* Get the working set of this map alone. */
 int pm_map_workingset(pm_map_t *map, pm_memusage_t *ws_out);
+
+__END_DECLS
 
 #endif
