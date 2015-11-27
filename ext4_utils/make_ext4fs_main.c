@@ -16,6 +16,7 @@
 
 #include <fcntl.h>
 #include <libgen.h>
+#include <stdio.h>
 #include <unistd.h>
 
 #if defined(__linux__)
@@ -28,7 +29,19 @@
 #include <private/android_filesystem_config.h>
 #endif
 
+#ifndef USE_MINGW
+#include <selinux/selinux.h>
+#include <selinux/label.h>
+#if !defined(HOST)
+#include <selinux/android.h>
+#endif
+#else
+struct selabel_handle;
+#endif
+
 #include "make_ext4fs.h"
+#include "ext4_utils.h"
+#include "canned_fs_config.h"
 
 #ifndef USE_MINGW /* O_BINARY is windows-specific flag */
 #define O_BINARY 0
@@ -41,10 +54,10 @@ static void usage(char *path)
 {
 	fprintf(stderr, "%s [ -l <len> ] [ -j <journal size> ] [ -b <block_size> ]\n", basename(path));
 	fprintf(stderr, "    [ -g <blocks per group> ] [ -i <inodes> ] [ -I <inode size> ]\n");
-	fprintf(stderr, "    [ -L <label> ] [ -f ] [ -a <android mountpoint> ]\n");
-	fprintf(stderr, "    [ -S file_contexts ]\n");
-	fprintf(stderr, "    [ -z | -s ] [ -t ] [ -w ] [ -c ] [ -J ]\n");
-	fprintf(stderr, "    <filename> [<directory>]\n");
+	fprintf(stderr, "    [ -L <label> ] [ -f ] [ -a <android mountpoint> ] [ -u ]\n");
+	fprintf(stderr, "    [ -S file_contexts ] [ -C fs_config ] [ -T timestamp ]\n");
+	fprintf(stderr, "    [ -z | -s ] [ -w ] [ -c ] [ -J ] [ -v ] [ -B <block_list_file> ]\n");
+	fprintf(stderr, "    <filename> [[<directory>] <target_out_directory>]\n");
 }
 
 int main(int argc, char **argv)
@@ -52,21 +65,26 @@ int main(int argc, char **argv)
 	int opt;
 	const char *filename = NULL;
 	const char *directory = NULL;
-	char *mountpoint = "";
+	const char *target_out_directory = NULL;
+	char *mountpoint = NULL;
 	fs_config_func_t fs_config_func = NULL;
+	const char *fs_config_file = NULL;
 	int gzip = 0;
 	int sparse = 0;
 	int crc = 0;
 	int wipe = 0;
-	int init_itabs = 0;
+	int real_uuid = 0;
 	int fd;
 	int exitcode;
+	int verbose = 0;
+	time_t fixed_time = -1;
 	struct selabel_handle *sehnd = NULL;
+	FILE* block_list_file = NULL;
 #ifndef USE_MINGW
 	struct selinux_opt seopts[] = { { SELABEL_OPT_PATH, "" } };
 #endif
 
-	while ((opt = getopt(argc, argv, "l:j:b:g:i:I:L:a:fwzJsctS:")) != -1) {
+	while ((opt = getopt(argc, argv, "l:j:b:g:i:I:L:a:S:T:C:B:fwzJsctvu")) != -1) {
 		switch (opt) {
 		case 'l':
 			info.len = parse_num(optarg);
@@ -94,7 +112,6 @@ int main(int argc, char **argv)
 			break;
 		case 'a':
 #ifdef ANDROID
-			fs_config_func = fs_config;
 			mountpoint = optarg;
 #else
 			fprintf(stderr, "can't set android permissions - built without android support\n");
@@ -104,6 +121,9 @@ int main(int argc, char **argv)
 			break;
 		case 'w':
 			wipe = 1;
+			break;
+		case 'u':
+			real_uuid = 1;
 			break;
 		case 'z':
 			gzip = 1;
@@ -118,7 +138,7 @@ int main(int argc, char **argv)
 			sparse = 1;
 			break;
 		case 't':
-			init_itabs = 1;
+			fprintf(stderr, "Warning: -t (initialize inode tables) is deprecated\n");
 			break;
 		case 'S':
 #ifndef USE_MINGW
@@ -130,6 +150,22 @@ int main(int argc, char **argv)
 			}
 #endif
 			break;
+		case 'v':
+			verbose = 1;
+			break;
+		case 'T':
+			fixed_time = strtoll(optarg, NULL, 0);
+			break;
+		case 'C':
+			fs_config_file = optarg;
+			break;
+		case 'B':
+			block_list_file = fopen(optarg, "w");
+			if (block_list_file == NULL) {
+				fprintf(stderr, "failed to open block_list_file: %s\n", strerror(errno));
+				exit(EXIT_FAILURE);
+			}
+			break;
 		default: /* '?' */
 			usage(argv[0]);
 			exit(EXIT_FAILURE);
@@ -138,7 +174,7 @@ int main(int argc, char **argv)
 
 #if !defined(HOST)
 	// Use only if -S option not requested
-	if (!sehnd && mountpoint[0] != '\0') {
+	if (!sehnd && mountpoint) {
 		sehnd = selinux_android_file_context_handle();
 
 		if (!sehnd) {
@@ -147,6 +183,16 @@ int main(int argc, char **argv)
 		}
 	}
 #endif
+
+	if (fs_config_file) {
+		if (load_canned_fs_config(fs_config_file) < 0) {
+			fprintf(stderr, "failed to load %s\n", fs_config_file);
+			exit(EXIT_FAILURE);
+		}
+		fs_config_func = canned_fs_config;
+	} else if (mountpoint) {
+		fs_config_func = fs_config;
+	}
 
 	if (wipe && sparse) {
 		fprintf(stderr, "Cannot specifiy both wipe and sparse\n");
@@ -171,6 +217,9 @@ int main(int argc, char **argv)
 	if (optind < argc)
 		directory = argv[optind++];
 
+	if (optind < argc)
+		target_out_directory = argv[optind++];
+
 	if (optind < argc) {
 		fprintf(stderr, "Unexpected argument: %s\n", argv[optind]);
 		usage(argv[0]);
@@ -180,16 +229,19 @@ int main(int argc, char **argv)
 	if (strcmp(filename, "-")) {
 		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0644);
 		if (fd < 0) {
-			error_errno("open");
+			perror("open");
 			return EXIT_FAILURE;
 		}
 	} else {
 		fd = STDOUT_FILENO;
 	}
 
-	exitcode = make_ext4fs_internal(fd, directory, mountpoint, fs_config_func, gzip,
-			sparse, crc, wipe, init_itabs, sehnd);
+	exitcode = make_ext4fs_internal(fd, directory, target_out_directory, mountpoint, fs_config_func, gzip,
+		sparse, crc, wipe, real_uuid, sehnd, verbose, fixed_time, block_list_file);
 	close(fd);
-
+	if (block_list_file)
+		fclose(block_list_file);
+	if (exitcode && strcmp(filename, "-"))
+		unlink(filename);
 	return exitcode;
 }
