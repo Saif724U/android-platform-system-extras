@@ -1,7 +1,26 @@
 #!/usr/bin/make -f
 
+include /usr/share/dpkg/pkg-info.mk
+
+UPSTREAM_TAG = android-$(subst +,_,$(DEB_VERSION_UPSTREAM))
+export ANDROID_LIBVERSION = 0.$(subst +r,.,$(DEB_VERSION_UPSTREAM))
+
 %:
 	dh $@
 
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/lib/android
+
+override_dh_auto_build:
+	make -f debian/libext4_utils.mk
+	make -f debian/libf2fs_utils.mk
+
+override_dh_auto_clean:
+	make clean -f debian/libext4_utils.mk
+	make clean -f debian/libf2fs_utils.mk
+
+get-orig-source: $(UPSTREAM_TAG).tar.gz
+	mk-origtargz --repack --compression xz $<
+
+$(UPSTREAM_TAG).tar.gz:
+	wget https://android.googlesource.com/platform/system/extras/+archive/$(UPSTREAM_TAG).tar.gz

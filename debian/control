@@ -1,39 +1,57 @@
 Source: android-platform-system-extras
 Section: devel
-Priority: extra
+Priority: optional
 Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.org>
-Uploaders: Hans-Christoph Steiner <hans@eds.org>
+Uploaders: Hans-Christoph Steiner <hans@eds.org>,
+           Kai-Chung Yan <seamlikok@gmail.com>
 Build-Depends: debhelper (>=9),
-               android-system-dev,
-               android-libsparse-host-dev,
-               libselinux-dev,
+               android-androidconfig-dev,
+               android-libsparse-dev,
+               android-libselinux-dev,
                zlib1g-dev
 Standards-Version: 3.9.5
 Homepage: https://android.googlesource.com/platform/system/extras
-Vcs-Git: https://alioth.debian.org/anonscm/git/android-tools/android-platform-system-extras.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=android-tools/android-platform-system-extras.git
+Vcs-Git: https://anonscm.debian.org/git/android-tools/android-platform-system-extras.git
+Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/android-platform-system-extras.git
 
-Package: android-ext4-utils
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: 
-
-Package: android-libext4-utils-host
+Package: android-libf2fs-utils
 Section: libs
-Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
-Description: Android utility library for cross-platform tools
- Library providing utility functions to Android related tools. This is needed
- purely to get various Android utilities working.
+Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Android F2FS utils library
+ This package contains only libf2fs_utils which is composed of libf2fs_ioutils and
+ libf2fs_dlutils. This library invokes functions of f2fs-tools libraries directly instead
+ of using dlopen.
+ .
+ This library is only used by Android SDK currently.
 
-Package: android-libext4-utils-host-dev
+Package: android-libf2fs-utils-dev
 Section: libdevel
-Architecture: any
-Depends: ${misc:Depends},
-         libc-dev,
-         android-libext4-utils-host (= ${binary:Version})
-Description: Android utility library for cross-platform tools - headers
- Library providing utility functions to Android related tools. This is needed
- purely to get various Android utilities working.
+Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
+Depends: android-libf2fs-utils (= ${binary:Version}),
+         f2fs-libs-dev,
+         ${misc:Depends}
+Description: Android F2FS utils library - Development files
+ This package contains only libf2fs_utils which is composed of libf2fs_ioutils and
+ libf2fs_dlutils. This library invokes functions of f2fs-tools libraries directly instead
+ of using dlopen.
+ .
+ This library is only used by Android SDK currently.
+ .
+ This package contains the development files.
+
+Package: android-libext4-utils
+Section: libs
+Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Android ext4 utils library
+ This library is only used by Android SDK currently.
+
+Package: android-libext4-utils-dev
+Section: libdevel
+Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
+Depends: android-libext4-utils (= ${binary:Version}), ${misc:Depends}
+Description: Android ext4 utils library - Development files
+ This library is only used by Android SDK currently.
  .
  This package contains the development files.

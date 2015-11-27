@@ -1,5 +1,5 @@
-android-platform-system-extras (21-1) unstable; urgency=low
+android-platform-system-extras (6.0.0+r26-1) UNRELEASED; urgency=low
 
-  * Initial release. (Closes: #)
+  * Initial release
 
- -- Hans-Christoph Steiner <hans@eds.org>  Sat, 04 Oct 2014 20:51:28 -0400
+ -- Kai-Chung Yan <seamlikok@gmail.com>  Fri, 27 Nov 2015 21:02:44 +0800
