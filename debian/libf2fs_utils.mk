@@ -5,10 +5,9 @@ CFLAGS += -fPIC
 CPPFLAGS += -include android/arch/AndroidConfig.h \
             -I/usr/include/android \
             -I/usr/include/f2fs-tools \
-            -I/usr/include/f2fs-tools/mkfs \
             -include stddef.h
 LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 -Wl,-rpath=/usr/lib/android \
-           -lf2fs -lf2fs_format -L/usr/lib/android -lsparse
+           -ldl -lf2fs -lf2fs_format -L/usr/lib/android -lsparse
 
 build: $(SOURCES)
 	$(CC) $^ -o $(NAME).so.$(ANDROID_LIBVERSION) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)

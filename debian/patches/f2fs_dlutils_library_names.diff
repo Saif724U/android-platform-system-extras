@@ -1,0 +1,34 @@
+Description:
+ F2FS libraries' names on Debian are defferent from the ones assumed by ASOP.
+Author: Kai-Chung Yan <seamlikok@gmail.com>
+Last-Update: 2016-01-06
+--- a/f2fs_utils/f2fs_dlutils.c
++++ b/f2fs_utils/f2fs_dlutils.c
+@@ -35,7 +35,8 @@
+ 
+ #include <f2fs_fs.h>
+ #include <f2fs_format_utils.h>
+-#define F2FS_DYN_LIB "libf2fs_fmt_host_dyn.so"
++#define F2FS_LIB "libf2fs.so.0"
++#define F2FS_FORMAT_LIB "libf2fs_format.so.0"
+ 
+ int (*f2fs_format_device_dl)(void);
+ void (*f2fs_init_configuration_dl)(struct f2fs_configuration *);
+@@ -51,12 +52,13 @@
+ 
+ int dlopenf2fs() {
+ 	void* f2fs_lib;
+-
+-	f2fs_lib = dlopen(F2FS_DYN_LIB, RTLD_NOW);
+-	if (!f2fs_lib) {
++	void* f2fs_format_lib;
++	f2fs_lib = dlopen(F2FS_LIB, RTLD_NOW);
++	f2fs_format_lib = dlopen(F2FS_FORMAT_LIB, RTLD_NOW);
++	if (!(f2fs_lib && f2fs_format_lib)) {
+ 		return -1;
+ 	}
+-	f2fs_format_device_dl = dlsym(f2fs_lib, "f2fs_format_device");
++	f2fs_format_device_dl = dlsym(f2fs_format_lib, "f2fs_format_device");
+ 	f2fs_init_configuration_dl = dlsym(f2fs_lib, "f2fs_init_configuration");
+ 	if (!f2fs_format_device_dl || !f2fs_init_configuration_dl) {
+ 		return -1;
