@@ -5,7 +5,6 @@ Maintainer: Android tools Maintainer <android-tools-devel@lists.alioth.debian.or
 Uploaders: Hans-Christoph Steiner <hans@eds.org>,
            Kai-Chung Yan <seamlikok@gmail.com>
 Build-Depends: debhelper (>=9),
-               android-androidconfig-dev,
                android-libsparse-dev,
                android-libselinux-dev,
                android-platform-system-core-headers,

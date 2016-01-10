@@ -7,12 +7,11 @@ CPPFLAGS += -include android/arch/AndroidConfig.h \
             -I/usr/include/f2fs-tools \
             -include stddef.h
 LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 -Wl,-rpath=/usr/lib/android \
-           -ldl -lf2fs -lf2fs_format -L/usr/lib/android -lsparse
+           -ldl -L/usr/lib/android -lsparse
 
 build: $(SOURCES)
-	$(CC) $^ -o $(NAME).so.$(ANDROID_LIBVERSION) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
-	ln -s $(NAME).so.$(ANDROID_LIBVERSION) $(NAME).so
-	ln -s $(NAME).so.$(ANDROID_LIBVERSION) $(NAME).so.0
+	$(CC) $^ -o $(NAME).so.0 $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
+	ln -s $(NAME).so.0 $(NAME).so
 
 clean:
 	$(RM) $(NAME).so*
