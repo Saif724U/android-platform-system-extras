@@ -8,6 +8,7 @@ Build-Depends: debhelper (>=9),
                android-androidconfig-dev,
                android-libsparse-dev,
                android-libselinux-dev,
+               android-platform-system-core-headers,
                libf2fs-dev,
                zlib1g-dev
 Standards-Version: 3.9.6
@@ -19,10 +20,9 @@ Package: android-libf2fs-utils
 Section: libs
 Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
 Depends: libf2fs0, ${shlibs:Depends}, ${misc:Depends}
-Description: Android F2FS utils library
+Description: Android F2FS utility library
  This package contains only libf2fs_utils which is composed of libf2fs_ioutils and
- libf2fs_dlutils. This library invokes functions of f2fs-tools libraries directly instead
- of using dlopen.
+ libf2fs_dlutils.
  .
  This library is only used by Android SDK currently.
 
@@ -32,10 +32,9 @@ Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
 Depends: android-libf2fs-utils (= ${binary:Version}),
          libf2fs-dev,
          ${misc:Depends}
-Description: Android F2FS utils library - Development files
+Description: Android F2FS utility library - Development files
  This package contains only libf2fs_utils which is composed of libf2fs_ioutils and
- libf2fs_dlutils. This library invokes functions of f2fs-tools libraries directly instead
- of using dlopen.
+ libf2fs_dlutils.
  .
  This library is only used by Android SDK currently.
  .
@@ -45,14 +44,14 @@ Package: android-libext4-utils
 Section: libs
 Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Android ext4 utils library
+Description: Android ext4 utility library
  This library is only used by Android SDK currently.
 
 Package: android-libext4-utils-dev
 Section: libdevel
 Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
 Depends: android-libext4-utils (= ${binary:Version}), ${misc:Depends}
-Description: Android ext4 utils library - Development files
+Description: Android ext4 utility library - Development files
  This library is only used by Android SDK currently.
  .
  This package contains the development files.
