@@ -3,6 +3,8 @@
 *.substvars
 *~
 android-libext4-utils/
+android-libext4-utils-dev/
+android-libf2fs-utils/
 android-libf2fs-utils-dev/
 files
 tmp/
