@@ -20,8 +20,8 @@ Section: libs
 Architecture: amd64 i386 arm arm64 armeb mips mipsel mips64 mips64el
 Depends: libf2fs0, ${shlibs:Depends}, ${misc:Depends}
 Description: Android F2FS utility library
- This package contains only libf2fs_utils which is composed of libf2fs_ioutils and
- libf2fs_dlutils.
+ This package contains only libf2fs_utils which is composed of libf2fs_ioutils
+ and libf2fs_dlutils.
  .
  This library is only used by Android SDK currently.
 
@@ -32,8 +32,8 @@ Depends: android-libf2fs-utils (= ${binary:Version}),
          libf2fs-dev,
          ${misc:Depends}
 Description: Android F2FS utility library - Development files
- This package contains only libf2fs_utils which is composed of libf2fs_ioutils and
- libf2fs_dlutils.
+ This package contains only libf2fs_utils which is composed of libf2fs_ioutils
+ and libf2fs_dlutils.
  .
  This library is only used by Android SDK currently.
  .
