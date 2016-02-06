@@ -47,6 +47,10 @@ Files: ext4_utils/crc16.c
 Copyright: 1986, Gary S. Brown
 License: BSD-2-clause
 
+Files: ext4_utils/ext4_crypt.cpp
+Copyright: 2015, Google, Inc.
+License: Apache-2.0
+
 License: Apache-2.0
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
