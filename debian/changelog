@@ -3,6 +3,7 @@ android-platform-system-extras (6.0.1+r16-2) UNRELEASED; urgency=medium
   * d/control:
     - Standards-Version => 3.9.8
     - Maintainer: Unify to "Android Tools Maintainers"
+    - Add dh-exec to Build-Depends
   * Add multiarch android directory to RPATH (Closes: #826642)
   * Install the libraries to multiarch path
   * d/rules: Move some global compiler flags to here
