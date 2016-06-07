@@ -1,3 +1,5 @@
+#!/usr/bin/dh-exec
+
 ext4_utils/ext4_extents.h        usr/include/android/ext4_utils
 ext4_utils/ext4_kernel_headers.h usr/include/android/ext4_utils
 ext4_utils/ext4_sb.h             usr/include/android/ext4_utils
@@ -6,4 +8,4 @@ ext4_utils/ext4.h                usr/include/android/ext4_utils
 ext4_utils/jbd2.h                usr/include/android/ext4_utils
 ext4_utils/make_ext4fs.h         usr/include/android/ext4_utils
 ext4_utils/xattr.h               usr/include/android/ext4_utils
-libext4_utils.so                 usr/lib/android
+libext4_utils.so                 usr/lib/${DEB_HOST_MULTIARCH}/android

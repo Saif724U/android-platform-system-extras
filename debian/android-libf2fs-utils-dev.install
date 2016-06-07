@@ -1,2 +1,4 @@
-libf2fs_utils.so       usr/lib/android
+#!/usr/bin/dh-exec
+
+libf2fs_utils.so       usr/lib/${DEB_HOST_MULTIARCH}/android
 f2fs_utils/make_f2fs.h usr/include/android/f2fs_utils
