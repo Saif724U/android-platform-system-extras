@@ -4,10 +4,10 @@ Priority: optional
 Maintainer: Android Tools Maintainers <android-tools-devel@lists.alioth.debian.org>
 Uploaders: Hans-Christoph Steiner <hans@eds.org>,
            Kai-Chung Yan <seamlikok@gmail.com>
-Build-Depends: android-libsparse-dev (>= 1:6.0.0+r26~),
-               android-libselinux-dev (>= 6.0.1+r16-),
-               android-platform-build-headers (>= 1:6.0.0+r26~),
-               android-platform-system-core-headers (>= 1:6.0.0+r26~),
+Build-Depends: android-libsparse-dev (>= 1:6.0.1+r55~),
+               android-libselinux-dev (>= 6.0.1+r55~),
+               android-platform-build-headers (>= 1:6.0.1+r55~),
+               android-platform-system-core-headers (>= 1:6.0.1+r55~),
                debhelper (>=9),
                dh-exec,
                libf2fs-dev,
