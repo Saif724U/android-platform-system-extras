@@ -3,8 +3,9 @@ android-platform-system-extras (6.0.1+r55-1) UNRELEASED; urgency=medium
   * New upstream release.
   * debian: Add watch file for usage with uscan
   * debian/watch: recompress using xz
+  * Update Android Build-Depends to the latest version available
 
- -- Chirayu Desai <chirayudesai1@gmail.com>  Thu, 21 Jul 2016 23:01:47 +0530
+ -- Chirayu Desai <chirayudesai1@gmail.com>  Sun, 21 Aug 2016 18:40:51 +0530
 
 android-platform-system-extras (6.0.1+r16-2) unstable; urgency=medium
 
