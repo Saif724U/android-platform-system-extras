@@ -1,4 +1,4 @@
-android-platform-system-extras (7.0.0+r1-1) UNRELEASED; urgency=medium
+android-platform-system-extras (7.0.0+r1-1) experimental; urgency=medium
 
   * New upstream release
   * Enable builds for ARM & MIPS
