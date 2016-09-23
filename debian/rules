@@ -8,15 +8,16 @@ export DEB_CPPFLAGS_MAINT_APPEND = -I/usr/include/android
 export DEB_CFLAGS_MAINT_APPEND = -DNDEBUG
 export DEB_CXXFLAGS_MAINT_APPEND = -DNDEBUG
 
+lib%.so: debian/lib%.mk
+	make -f $<
+
 %:
 	dh $@
 
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/lib/$(DEB_HOST_MULTIARCH)/android
 
-override_dh_auto_build:
-	make -f debian/libext4_utils.mk
-	make -f debian/libf2fs_utils.mk
+override_dh_auto_build: libext4_utils.so libf2fs_utils.so
 
 override_dh_auto_clean:
 	dh_auto_clean
