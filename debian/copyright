@@ -2,6 +2,10 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0
 Upstream-Name: debugging/inspection tools
 Upstream-Contact: https://source.android.com/compatibility/contact-us.html
 Source: https://android.googlesource.com/platform/system/extras
+Files-Excluded: *.apk
+                *.data
+                *.zip
+                simpleperf/testdata/elf
 
 Files: *
 Copyright: 2005-2015, The Android Open Source Project
