@@ -19,7 +19,7 @@ Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/android-platform-syst
 
 Package: android-libf2fs-utils
 Section: libs
-Architecture: amd64 i386
+Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
 Depends: libf2fs0, ${shlibs:Depends}, ${misc:Depends}
 Description: Android F2FS utility library
  This package contains only libf2fs_utils which is composed of libf2fs_ioutils
@@ -29,7 +29,7 @@ Description: Android F2FS utility library
 
 Package: android-libf2fs-utils-dev
 Section: libdevel
-Architecture: amd64 i386
+Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
 Depends: android-libf2fs-utils (= ${binary:Version}),
          libf2fs-dev,
          ${misc:Depends}
@@ -43,14 +43,14 @@ Description: Android F2FS utility library - Development files
 
 Package: android-libext4-utils
 Section: libs
-Architecture: amd64 i386
+Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Android ext4 utility library
  This library is only used by Android SDK currently.
 
 Package: android-libext4-utils-dev
 Section: libdevel
-Architecture: amd64 i386
+Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
 Depends: android-libext4-utils (= ${binary:Version}), ${misc:Depends}
 Description: Android ext4 utility library - Development files
  This library is only used by Android SDK currently.
