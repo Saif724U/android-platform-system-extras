@@ -2,6 +2,7 @@ Description:
  F2FS libraries' names on Debian are defferent from the ones assumed by ASOP.
 Author: Kai-Chung Yan <seamlikok@gmail.com>
 Last-Update: 2016-01-06
+Forwarded: not-needed
 --- a/f2fs_utils/f2fs_dlutils.c
 +++ b/f2fs_utils/f2fs_dlutils.c
 @@ -35,7 +35,8 @@
