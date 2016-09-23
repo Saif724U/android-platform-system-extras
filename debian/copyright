@@ -15,14 +15,14 @@ Files: debian/*
 Copyright: 2016, Kai-Chung Yan <seamlikok@gmail.com>
 License: Apache-2.0
 
-Files: cpustats/cpustats.c
-Copyright: 2012, The Android Open Source Project
+Files: ANRdaemon/ANRdaemon.cpp
+       cpustats/cpustats.c
+Copyright: 2012-2015, The Android Open Source Project
 License: BSD-3-clause
 
 Files: f2fs_utils/f2fs_dlutils.c
        f2fs_utils/f2fs_ioutils.c
        f2fs_utils/f2fs_utils.c
-       tests/bionic/libc/*
        tests/sdcard/*.cpp
        tests/sdcard/*.h
 Copyright: 2005-2012, The Android Open Source Project
