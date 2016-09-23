@@ -1,8 +1,10 @@
 android-platform-system-extras (7.0.0+r1-1) UNRELEASED; urgency=medium
 
   * New upstream release
+  * Enable builds for ARM & MIPS
+  * Update to debhelper 10
 
- -- Kai-Chung Yan <seamlikok@gmail.com>  Fri, 23 Sep 2016 14:50:31 +0800
+ -- Kai-Chung Yan <seamlikok@gmail.com>  Fri, 23 Sep 2016 18:47:36 +0800
 
 android-platform-system-extras (6.0.1+r55-1) unstable; urgency=medium
 
