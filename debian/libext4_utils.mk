@@ -11,9 +11,9 @@ SOURCES = make_ext4fs.c \
           crc16.c \
           ext4_sb.c
 SOURCES := $(foreach source, $(SOURCES), ext4_utils/$(source))
+CFLAGS += -fno-strict-aliasing 
 LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 \
-           -Wl,-rpath=/usr/lib/android:/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-           -L/usr/lib/android \
+           -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
            -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
            -lsparse -lselinux
 

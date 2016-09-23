@@ -3,8 +3,7 @@ SOURCES = f2fs_utils.c f2fs_ioutils.c f2fs_dlutils.c make_f2fs_main.c
 SOURCES := $(foreach source, $(SOURCES), f2fs_utils/$(source))
 CPPFLAGS += -I/usr/include/f2fs-tools -include stddef.h
 LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 \
-           -Wl,-rpath=/usr/lib/android:/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-           -L/usr/lib/android \
+           -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
            -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
            -lsparse -ldl
 
