@@ -8,7 +8,7 @@ Uploaders: Hans-Christoph Steiner <hans@eds.org>,
 Build-Depends: android-libsparse-dev (>= 1:7.0.0),
                android-libselinux-dev (>= 7.0.0),
                android-platform-system-core-headers (>= 1:7.0.0),
-               debhelper (>=9),
+               debhelper (>=10),
                dh-exec,
                libf2fs-dev,
                zlib1g-dev
