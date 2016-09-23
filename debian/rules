@@ -19,6 +19,7 @@ override_dh_auto_build:
 	make -f debian/libf2fs_utils.mk
 
 override_dh_auto_clean:
+	dh_auto_clean
 	make clean -f debian/libext4_utils.mk
 	make clean -f debian/libf2fs_utils.mk
 
