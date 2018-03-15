@@ -35,6 +35,21 @@ Replaces: android-tools-fsutils (<< 6.0~)
 Description: Android ext4 to simg
  A command line tool to make sparse images from ext4 file system images.
 
+Package: ext4fixup
+Architecture: amd64 i386
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Breaks: android-tools-fsutils (<< 6.0~)
+Replaces: android-tools-fsutils (<< 6.0~)
+Description: Android ext4 small fixups
+ A command line tool to make sparse images from ext4 file system images.
+
+Package: mkext4fs
+Architecture: amd64 i386
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Breaks: android-tools-fsutils (<< 6.0~)
+Replaces: android-tools-fsutils (<< 6.0~)
+Description: Android make ext4 fs
+ A command line tool to make sparse images from ext4 file system images.
 
 
 Package: android-libf2fs-utils
@@ -65,8 +80,6 @@ Package: android-libext4-utils
 Section: libs
 Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Breaks: android-tools-fsutils (<< 6.0~)
-Replaces: android-tools-fsutils (<< 6.0~)
 Description: Android ext4 utility library
  This library is only used by fastboot currently.
 

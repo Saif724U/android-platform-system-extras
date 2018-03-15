@@ -1,0 +1,3 @@
+#!/usr/bin/dh-exec
+
+ext4_utils/ext4fixup.c usr/bin
