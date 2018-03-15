@@ -9,22 +9,48 @@ export DEB_CFLAGS_MAINT_APPEND = -DNDEBUG
 export DEB_CXXFLAGS_MAINT_APPEND = -DNDEBUG
 
 
+STAGE1_COMPONENTS = ext2simg \
+                    ext4fixup \
+                    mkext4fs \
+		    
+COMPONENTS = $(STAGE1_COMPONENTS)
+ifeq ($(filter stage1,$(DEB_BUILD_PROFILES)),)
+  COMPONENTS += $(OTHER_COMPONENTS)
+endif
+
+# If building on architectures other than the supported ones, only build the
+# architecture independent "android-platform-system-core-headers"
+ifeq ($(filter amd64 i386 armel armhf arm64 mips mipsel mips64el,$(DEB_HOST_ARCH)),)
+  COMPONENTS =
+endif
+
+
+
 lib%.so: debian/lib%.mk
 	make -f $<
 
 ext2simg: debian/ext2simg.mk 
 	make -f $<
 
-%:
-	dh $@
+ext4fixup: debian/ext2simg.mk libext4_utils.so
+	make -f $<
 
-.PHONY: ext2simg
+mkext4fs: debian/ext2simg.mk libext4_utils.so
+	make -f $<
+
+
+
+%:
+	dh $@ --with bash-completion
+
+.PHONY: ext2simg ext4fixup mkext4fs
 
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/lib/$(DEB_HOST_MULTIARCH)/android
 
-override_dh_auto_build: libext4_utils.so \
-			 libf2fs_utils.so \
+override_dh_auto_build: $(COMPONENTS) 
+		libext4_utils.so \
+		libf2fs_utils.so \
 
 
 override_dh_auto_clean:
@@ -32,6 +58,8 @@ override_dh_auto_clean:
 	make clean -f debian/libext4_utils.mk
 	make clean -f debian/libf2fs_utils.mk
 	make clean -f debian/ext2simg.mk
+	make clean -f debian/ext4fixup.mk
+	make clean -f debian/mkext4fs.mk
 
 get-orig-source:
 	uscan --download-current-version --force-download
