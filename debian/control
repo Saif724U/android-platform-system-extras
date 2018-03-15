@@ -18,13 +18,22 @@ Vcs-Git: https://anonscm.debian.org/git/android-tools/android-platform-system-ex
 Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/android-platform-system-extras.git
 
 
-Package: mkuserimg-1.0
-Section: devel
-Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
+
+Package: mkuserimg
+Architecture: amd64 i386
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Android Ext4 filesystems creator
- This package contains only utilities to create ext4 filesystem extensions for android images(.img)
- .
+Breaks: android-tools-fsutils (<< 6.0~)
+Replaces: android-tools-fsutils (<< 6.0~)
+Description: Android ext4 image maker
+ A command line tool to make android images(.img) with ext4 file systems.
+
+Package: ext2simg
+Architecture: amd64 i386
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Breaks: android-tools-fsutils (<< 6.0~)
+Replaces: android-tools-fsutils (<< 6.0~)
+Description: Android ext4 to simg
+ A command line tool to make sparse images from ext4 file system images.
 
 
 
@@ -56,6 +65,8 @@ Package: android-libext4-utils
 Section: libs
 Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Breaks: android-tools-fsutils (<< 6.0~)
+Replaces: android-tools-fsutils (<< 6.0~)
 Description: Android ext4 utility library
  This library is only used by fastboot currently.
 
