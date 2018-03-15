@@ -27,6 +27,15 @@ Description: Android F2FS utility library
  .
  This library is only used by fastboot currently.
 
+
+Package: mkuserimg-1.0
+Section: devel
+Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Android Ext4 Image maker
+ This package helps to create ext4 filessystems for android images.
+ .
+
 Package: android-libf2fs-utils-dev
 Section: libdevel
 Architecture: i386 amd64 armel armhf arm64 mips mipsel mips64el
