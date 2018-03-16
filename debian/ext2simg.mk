@@ -1,5 +1,5 @@
 NAME = ext2simg
-SOURCES = ext2simg.c sparse_crc32.c
+SOURCES = ext2simg.c sparse_crc32.c sparse.c
 SOURCES := $(foreach source, $(SOURCES), ext4_utils/$(source))
 CFLAGS += -Iext4_utils/include -fpermissive
 LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
