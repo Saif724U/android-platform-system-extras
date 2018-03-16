@@ -1,3 +1,0 @@
-#!/usr/bin/dh-exec
-
-ext4_utils/mkuserimg.sh usr/bin
