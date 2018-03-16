@@ -1,3 +1,3 @@
 #!/usr/bin/dh-exec
 
-ext4_utils/make_ext4fs.c usr/bin
+ext4_utils/mkext4fs usr/bin
