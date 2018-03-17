@@ -32,10 +32,10 @@ lib%.so: debian/lib%.mk
 ext2simg: debian/ext2simg.mk 
 	make -f $<
 
-ext4fixup: debian/ext2simg.mk libext4_utils.so
+ext4fixup: debian/ext4fixup.mk 
 	make -f $<
 
-mkext4fs: debian/ext2simg.mk libext4_utils.so
+mkext4fs: debian/mkext4fs.mk 
 	make -f $<
 
 
@@ -48,7 +48,9 @@ mkext4fs: debian/ext2simg.mk libext4_utils.so
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/lib/$(DEB_HOST_MULTIARCH)/android
 
-override_dh_auto_build: $(COMPONENTS) 
+override_dh_auto_build: ext2simg \
+		ext4fixup \
+		mkext4fs \
 		libext4_utils.so \
 		libf2fs_utils.so \
 

@@ -1,13 +1,15 @@
 NAME = ext4fixup
-SOURCES = ext4fixup.c sparse_crc32.c
+SOURCES = ext4fixup.c
 SOURCES := $(foreach source, $(SOURCES), ext4_utils/$(source))
-CFLAGS += -Iext4_utils/include -fpermissive
-LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-           -Wl,-rpath-link=. \
-           -lz -L. -lsparse
+CFLAGS += -fno-strict-aliasing 
+LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 \
+           -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+           -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+           -lsparse -lselinux
 
 build: $(SOURCES)
-	$(CXX) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(LDFLAGS)
+	$(CC) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 clean:
 	$(RM) ext4_utils/$(NAME)
+
