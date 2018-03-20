@@ -8,7 +8,7 @@ LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
            -lz -lselinux -lext4_utils -lext2_uuid -lcutils 
 
 build: $(SOURCES)
-	$(CXX) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
+	$(CC) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 clean:
 	$(RM) ext4_utils/$(NAME)
