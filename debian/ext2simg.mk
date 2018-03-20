@@ -1,11 +1,11 @@
 NAME = ext2simg
 SOURCES = ext2simg.c
 SOURCES := $(foreach source, $(SOURCES), ext4_utils/$(source))
-CFLAGS += -fno-strict-aliasing 
-LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 \
-           -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+CFLAGS +=  -Iext4_utils
+LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+           -Wl,-rpath-link=. \
            -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-           -lsparse -lselinux
+           -lz -lsparse -lselinux -lext4_utils
 
 build: $(SOURCES)
 	$(CC) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
