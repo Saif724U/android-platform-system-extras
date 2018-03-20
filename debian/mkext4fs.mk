@@ -1,14 +1,14 @@
-NAME = mkext4fs
-SOURCES = make_ext4fs.c
+NAME = make_ext4fs
+SOURCES = make_ext4fs_main.c
 SOURCES := $(foreach source, $(SOURCES), ext4_utils/$(source))
-CFLAGS += -fno-strict-aliasing 
-LDFLAGS += -shared -Wl,-soname,$(NAME).so.0 \
-           -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+CFLAGS +=  -I -DREAL_UUID
+LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+	   -Wl,-rpath-link=. \
            -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-           -lsparse -lselinux
+           -lz -lselinux -lext4_utils -lext2_uuid -lcutils 
 
 build: $(SOURCES)
-	$(CC) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
+	$(CXX) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
 
 clean:
 	$(RM) ext4_utils/$(NAME)
