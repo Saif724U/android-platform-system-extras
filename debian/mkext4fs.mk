@@ -1,11 +1,11 @@
-NAME = make_ext4fs
+NAME = mkext4fs
 SOURCES = make_ext4fs_main.c
 SOURCES := $(foreach source, $(SOURCES), ext4_utils/$(source))
-CFLAGS +=  -I -DREAL_UUID
+CFLAGS += -I/usr/include/android/ -DHOST -DANDROID
 LDFLAGS += -Wl,-rpath=/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-	   -Wl,-rpath-link=. \
-           -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
-           -lz -lselinux -lext4_utils -lext2_uuid -lcutils 
+           -Wl,-rpath-link=. \
+	   -L/usr/lib/$(DEB_HOST_MULTIARCH)/android \
+           -lz -lselinux -lsparse -lext4_utils -lcutils
 
 build: $(SOURCES)
 	$(CC) $^ -o ext4_utils/$(NAME) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)
