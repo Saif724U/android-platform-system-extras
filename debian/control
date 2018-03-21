@@ -7,6 +7,8 @@ Uploaders: Hans-Christoph Steiner <hans@eds.org>,
            Chirayu Desai <chirayudesai1@gmail.com>
 Build-Depends: android-libsparse-dev (>= 1:7.0.0+r33~),
                android-libselinux-dev (>= 7.0.0~),
+	       android-libcutils-dev,
+	       e2fsprogs,
                android-platform-system-core-headers (>= 1:7.0.0+r33~),
                debhelper (>=10),
                dh-exec,
@@ -34,6 +36,7 @@ Breaks: android-tools-fsutils (<< 6.0~)
 Replaces: android-tools-fsutils (<< 6.0~)
 Description: Android ext4 to simg
  A command line tool to make sparse images from ext4 file system images.
+
 
 Package: ext4fixup
 Architecture: amd64 i386
