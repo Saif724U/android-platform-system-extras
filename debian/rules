@@ -38,8 +38,12 @@ override_dh_auto_build: ext4_utils/ext2simg \
 		ext4_utils/ext4fixup \
 		ext4_utils/mkext4fs \
 		libext4_utils.so \
-		libf2fs_utils.so \
-
+		libf2fs_utils.so 
+	pandoc -s -o debian/mkext4fs.1 debian/mkext4fs.1.md 
+	pandoc -s -o debian/ext4fixup.1 debian/ext4fixup.1.md 
+	pandoc -s -o debian/ext2simg.1 debian/ext2simg.1.md 
+	pandoc -s -o debian/mkuserimg.1 debian/mkuserimg.1.md 
+		
 
 override_dh_auto_clean:
 	dh_auto_clean
@@ -48,6 +52,7 @@ override_dh_auto_clean:
 	make clean -f debian/ext2simg.mk
 	make clean -f debian/ext4fixup.mk
 	make clean -f debian/mkext4fs.mk
+	$(RM) debian/*.1
 
 get-orig-source:
 	uscan --download-current-version --force-download
