@@ -1,3 +1,2 @@
-#!/usr/bin/dh-exec
 
-ext4_utils/ext2simg usr/bin
+ext4_utils/ext4fixup usr/bin
