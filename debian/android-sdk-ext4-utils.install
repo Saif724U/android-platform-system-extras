@@ -1,0 +1,6 @@
+#!/usr/bin/dh-exec
+
+ext4_utils/mkuserimg.sh => usr/bin/mkuserimg
+ext4_utils/ext2simg usr/bin
+ext4_utils/ext4fixup usr/bin
+ext4_utils/make_ext4fs usr/bin

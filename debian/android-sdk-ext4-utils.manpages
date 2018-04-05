@@ -1,0 +1,4 @@
+debian/mkuserimg.1
+debian/make_ext4fs.1
+debian/ext4fixup.1
+debian/ext2simg.1

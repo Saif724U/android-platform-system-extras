@@ -13,6 +13,7 @@ Build-Depends: android-libsparse-dev (>= 1:7.0.0+r33~),
                android-platform-system-core-headers (>= 1:7.0.0+r33~),
                debhelper (>=10),
                dh-exec,
+	       pandoc,
                libf2fs-dev,
                zlib1g-dev
 Standards-Version: 3.9.8
@@ -22,38 +23,13 @@ Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/android-platform-syst
 
 
 
-Package: mkuserimg
+Package: android-sdk-ext4-utils
 Architecture: amd64 i386
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Breaks: android-tools-fsutils (<< 6.0~)
 Replaces: android-tools-fsutils (<< 6.0~)
-Description: Android ext4 image maker
- A command line tool to make android images(.img) with ext4 file systems.
-
-Package: ext2simg
-Architecture: amd64 i386
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Breaks: android-tools-fsutils (<< 6.0~)
-Replaces: android-tools-fsutils (<< 6.0~)
-Description: Android ext4 to simg
- A command line tool to make sparse images from ext4 file system images.
-
-
-Package: ext4fixup
-Architecture: amd64 i386
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Breaks: android-tools-fsutils (<< 6.0~)
-Replaces: android-tools-fsutils (<< 6.0~)
-Description: Android ext4 small fixups
- A command line tool to make sparse images from ext4 file system images.
-
-Package: mkext4fs
-Architecture: amd64 i386
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Breaks: android-tools-fsutils (<< 6.0~)
-Replaces: android-tools-fsutils (<< 6.0~)
-Description: Android make ext4 fs
- A command line tool to make sparse images from ext4 file system images.
+Description: Android ext4-utils tools
+ Command line tools to make sparse images from ext4 file system images and android images(.img) with ext4 file systems .
 
 
 Package: android-libf2fs-utils
