@@ -7,15 +7,30 @@ Uploaders: Hans-Christoph Steiner <hans@eds.org>,
            Chirayu Desai <chirayudesai1@gmail.com>
 Build-Depends: android-libsparse-dev (>= 1:7.0.0+r33~),
                android-libselinux-dev (>= 7.0.0~),
+	       android-libcutils-dev,
+	       android-libext4-utils-dev,
+	       e2fsprogs,
                android-platform-system-core-headers (>= 1:7.0.0+r33~),
                debhelper (>=10),
                dh-exec,
+	       pandoc,
                libf2fs-dev,
                zlib1g-dev
 Standards-Version: 3.9.8
 Homepage: https://android.googlesource.com/platform/system/extras
 Vcs-Git: https://anonscm.debian.org/git/android-tools/android-platform-system-extras.git
 Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/android-platform-system-extras.git
+
+
+
+Package: android-sdk-ext4-utils
+Architecture: amd64 i386
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Breaks: android-tools-fsutils (<< 6.0~)
+Replaces: android-tools-fsutils (<< 6.0~)
+Description: Android ext4-utils tools
+ Command line tools to make sparse images from ext4 file system images and android images(.img) with ext4 file systems .
+
 
 Package: android-libf2fs-utils
 Section: libs

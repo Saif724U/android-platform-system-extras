@@ -8,21 +8,42 @@ export DEB_CPPFLAGS_MAINT_APPEND = -I/usr/include/android
 export DEB_CFLAGS_MAINT_APPEND = -DNDEBUG
 export DEB_CXXFLAGS_MAINT_APPEND = -DNDEBUG
 
+# If building on architectures other than the supported ones, only build the
+# architecture independent "android-platform-system-core-headers"
+
+
 lib%.so: debian/lib%.mk
+	make -f $<
+
+ext4_utils/ext2simg: debian/ext2simg.mk
+	make -f $<
+
+ext4_utils/ext4fixup: debian/ext4fixup.mk
+	make -f $<
+
+ext4_utils/make_ext4fs: debian/make_ext4fs.mk
 	make -f $<
 
 %:
 	dh $@
 
+
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/lib/$(DEB_HOST_MULTIARCH)/android
 
-override_dh_auto_build: libext4_utils.so libf2fs_utils.so
-
+override_dh_auto_build: ext4_utils/ext2simg \
+		ext4_utils/ext4fixup \
+		ext4_utils/make_ext4fs \
+		libext4_utils.so \
+		libf2fs_utils.so
+		
 override_dh_auto_clean:
 	dh_auto_clean
 	make clean -f debian/libext4_utils.mk
 	make clean -f debian/libf2fs_utils.mk
+	make clean -f debian/ext2simg.mk
+	make clean -f debian/ext4fixup.mk
+	make clean -f debian/make_ext4fs.mk
 
 get-orig-source:
 	uscan --download-current-version --force-download
