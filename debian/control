@@ -26,8 +26,8 @@ Vcs-Browser: https://anonscm.debian.org/cgit/android-tools/android-platform-syst
 Package: android-sdk-ext4-utils
 Architecture: amd64 i386
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Breaks: android-tools-fsutils (<< 6.0~)
-Replaces: android-tools-fsutils (<< 6.0~)
+Breaks: android-tools-fsutils (<< 5.1.1.r38-1.1~)
+Replaces: android-tools-fsutils (<< 5.1.1.r38-1.1~)
 Description: Android ext4-utils tools
  Command line tools to make sparse images from ext4 file system images and android images(.img) with ext4 file systems .
 
